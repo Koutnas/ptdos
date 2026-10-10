@@ -10,7 +10,8 @@
     "plugins.pingofdeath",
     "plugins.ntpampl",
     "plugins.slowloris",
-    "plugins.rudy"
+    "plugins.rudy",
+    "plugins.zipbomb"
   ],
   "attacks": [
     {
@@ -67,6 +68,11 @@
       "type": "rudy",
       "category": "Logical attacks",
       "name": "rudy"
+    },
+    {
+      "type": "zipbomb",
+      "category": "Logical attacks",
+      "name": "zipbomb"
     }
   ]
 }

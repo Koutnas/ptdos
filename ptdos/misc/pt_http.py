@@ -3,6 +3,23 @@ from misc.pt_socket import create_socket
 from misc.globalfuncs import generate_string, load_user_agents
 # external libs
 from random import choice
+from requests import post
+from requests.exceptions import RequestException
+
+def post_file_upload(dst_url, filename, payload_bytes, content_type="application/zip"):
+    """
+    Automatically formats and sends a multipart/form-data request.
+    """
+    try:
+        files = {
+            'file': (filename, payload_bytes, content_type)
+        }
+        response = post(dst_url, files=files, timeout=3)
+        with open("log.txt","w") as log:
+            log.write(response.text)
+        
+    except RequestException as e:
+        return False
 
 
 def create_slowloris_socket(ip, port, user_agents, accept_lang, attackname):

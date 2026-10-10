@@ -203,7 +203,8 @@ class CheckService:
             while not stopped.wait(1):  # the first call is in `1` secs
                 response = get_response(self.url)
                 # 200 is OK status for HTTP, means server is alive
-                if response[0] == 200:
+                # Sure, but this doesnt cover all cases for when server is alive.
+                if response[0] == 200 or response[0] == 403 or response[0] == 405:
                     self.conndata_success.append(response)
                     response = ()
                 else:
@@ -216,12 +217,15 @@ class CheckService:
 
     def monitoring_before_start(self, ptjsonlib, use_json):
         """Run monitoring before attack starts and calculate avg response time."""
+        if "127.0.0.1" in self.destination or "localhost" in self.destination: #Made for local generation of zipbombs might remove later if better solution is found
+            ptprint(out_ifnot("Local loopback detected. Skipping baseline latency check.", "INFO", use_json))
+            return
         ptprint(out_ifnot(f"Measuring response time of {self.destination} for 10 seconds before test starts", "INFO", use_json))
         monitoring_success = []
         n = 10
         while n > 0:
             response = get_response(self.url)
-            if response[0] == 200:
+            if response[0] == 200 or response[0] == 403 or response[0] == 405:
                 monitoring_success.append(response)
                 response = ()
             n -= 1
