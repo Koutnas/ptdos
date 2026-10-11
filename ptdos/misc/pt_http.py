@@ -14,9 +14,8 @@ def post_file_upload(dst_url, filename, payload_bytes, content_type="application
         files = {
             'file': (filename, payload_bytes, content_type)
         }
-        response = post(dst_url, files=files, timeout=3)
-        with open("log.txt","w") as log:
-            log.write(response.text)
+        post(dst_url, files=files, timeout=3)
+        return True
         
     except RequestException as e:
         return False

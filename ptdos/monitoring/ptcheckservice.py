@@ -63,6 +63,10 @@ def attack_append_out_data(use_json, json_obj, json_no, attackname, duration, at
             ptprint(out_ifnot(f"Total of {attackname} packets sent: {count}", "INFO", use_json))
         case ("httpgetflood" | "httppostflood" | "httpheadflood"):  # no packets no dstport
             ptprint(out_ifnot(f"Destination: {dst}, test duration: {duration} seconds", "INFO", use_json))
+        case "zipbomb":
+            ptprint(out_ifnot(f"Destination: {dst}, test duration: {duration} seconds", "INFO", use_json))
+            if count:
+                ptprint(out_ifnot(f"Total ZIP bombs successfully delivered: {count}", "INFO", use_json))
 
 
 def print_error(ptjsonlib, use_json, json_no, attackname, error_msg):

