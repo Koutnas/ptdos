@@ -11,7 +11,8 @@
     "plugins.ntpampl",
     "plugins.slowloris",
     "plugins.rudy",
-    "plugins.zipbomb"
+    "plugins.zipbomb",
+    "plugins.flatbomb"
   ],
   "attacks": [
     {
@@ -73,6 +74,11 @@
       "type": "zipbomb",
       "category": "Logical attacks",
       "name": "zipbomb"
+    },
+    {
+      "type": "flatbomb",
+      "category": "Logical attacks",
+      "name": "flatbomb"
     }
   ]
 }

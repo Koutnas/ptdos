@@ -1,5 +1,3 @@
-#Workspace - Ondra
-
 
 """ptdos extension that adds a zipbomb attack"""
 #python3 ptdos.py -a zipbomb -ds 1 -l 5 -c 5 -dst http://192.168.0.80/upload.php -o mini.zip
@@ -30,7 +28,7 @@ class ZipBomb:
         d_size = args["dummy-size"]
         output = args["output"]
 
-        ptprint(out_ifnot(f"Expected size: {d_size*(copies**layers)} MB", "INFO", use_json))
+        ptprint(out_ifnot(f"Begining construction, expected size:{d_size*(copies**layers)} MB", "INFO", use_json))
 
         bomb = make_recurssive_bomb(d_size,copies,layers)
 
@@ -42,6 +40,8 @@ class ZipBomb:
         if "127.0.0.1" in dst or "localhost" in dst:
             ptprint(out_ifnot("Local mode detected. Skipping HTTP delivery.", "INFO", use_json))
             return
+
+        att_start_t_epoch = time() #workaround since building zipbombs obviously takes time
         
         monitoringprocess = monitoring.call_checkservice_repeatedly(use_json)
         ctx = 0
@@ -71,7 +71,7 @@ class ZipBomb:
     def make_help():
         """Help for attack printed out in main file ptdos.py."""
         return [
-            {"Zip-Bomb attack options": [
+            {"Zip Bomb attack options": [
                 ["-a", "--attack", "<attack>", "Attack name - zipbomb"],
                 ["-ds", "--dummy-size", "<dummy-size>", "Size of the first generated file dummy file in MB"],
                 ["-l", "--layers", "<layers>", "Ammount of layers in the zipbomb"],

