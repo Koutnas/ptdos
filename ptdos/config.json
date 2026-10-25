@@ -12,7 +12,8 @@
     "plugins.slowloris",
     "plugins.rudy",
     "plugins.zipbomb",
-    "plugins.flatbomb"
+    "plugins.flatbomb",
+    "plugins.sevenbomb"
   ],
   "attacks": [
     {
@@ -79,6 +80,11 @@
       "type": "flatbomb",
       "category": "Logical attacks",
       "name": "flatbomb"
+    },
+    {
+      "type": "sevenbomb",
+      "category": "Logical attacks",
+      "name": "sevenbomb"
     }
   ]
 }
