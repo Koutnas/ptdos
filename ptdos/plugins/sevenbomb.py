@@ -84,10 +84,6 @@ class SevenBomb:
     @staticmethod
     def make_args(parser):
         """Specify arguments needed for the attack"""
-        parser.add_argument("-ds", "--dummy-size", dest="dummy-size", type=int, default=1) 
-        parser.add_argument("-l", "--layers", dest="layers", type=int, default=5)  
-        parser.add_argument("-c", "--copies", dest="copies", type=int, default=10)
-        parser.add_argument("-o", "--output", dest="output", type=str, default="")  
 
 def register() -> None:
     """Register attack in factory."""
