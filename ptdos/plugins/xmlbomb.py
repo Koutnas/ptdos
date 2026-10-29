@@ -18,7 +18,11 @@ from socket import error, timeout as socket_timeout
 # while building/holding the string, not just the target.
 EXPANSION_WARN_BYTES = 10 * 1024 * 1024 * 1024  # 10 GB
 
+#Proč vůbec tady mít to varování a když už, tak mít default size co exceeduje to varování je za mě osobně antipatern.
+#Default testing háže error to by asi nemělo být default behavior pro replikaci $ python3 ptdos/ptdos.py -a xmlbomb -dst localhost.
+#Nemáš nastavenej user.name a user.email na gihubu jsi vidět jako BuildTools.
 
+#Hodit do pt_http a využít useragent a encoding json ať se nepoužívá staticky
 def build_post_request(hostname: str, path: str, query: str, body_bytes: bytes) -> bytes:
     """Build a raw HTTP/1.1 POST request carrying an XML body."""
     uri = f"{path}?{query}" if query else (path or "/")
@@ -91,6 +95,7 @@ class XmlBomb:
 
         monitoringprocess = monitoring.call_checkservice_repeatedly(use_json)
 
+        #Tady stojí za zvážení zda není lepší dodržení plugin konvence while loopu který je většiny závislý na duration
         sent = 0
         try:
             while sent < requests_to_send:
@@ -146,6 +151,8 @@ class XmlBomb:
             monitoringprocess()  # stop checkservice end monitoring
             return print_error(json_obj, use_json, json_no, self.name, err.args[0] if err.args else str(err))
 
+
+    #Možná stojí za zváždění rozdělení na 2 různé útoky jeden využívající exponenciální druhý využívající kvadratický růst
     @staticmethod
     def make_help():
         """Help for attack printed out in main file ptdos.py."""
